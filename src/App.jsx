@@ -3,6 +3,8 @@ import axios from 'axios';
 const API_KEY = import.meta.env.VITE_API_KEY;
 import { Form, Button, Card, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+const API_SERVER_AD = import.meta.env.VITE_API_URL;
+import WeatherComponent from './weather';
 
 
 
@@ -15,17 +17,35 @@ export default function App() {
     longitude: ""
   })
   const [searchQuery, setSearchQuery] = useState('');
+  const [weather,setWeather] = useState('');
 
   async function getLocation() {
     const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`
     console.log(API);
-    try {
+    // try {
       const response = await axios.get(API);
       console.log(response.data);
       const { display_name, lat, lon } = response.data[0];
-      setLocation({ display_name, latitude: lat, longitude: lon });
-    } catch (error) {
-      console.error('Error fetching location:', error);
+      console.log(display_name, lat, lon);
+      setLocation({ display_name:display_name, latitude: lat, longitude: lon });
+      handleSubmit(lat, lon);
+    // } catch (error) {
+    //   console.error('Error fetching location:', error);
+    // }
+  }
+
+  
+
+  async function handleSubmit(cityLat,cityLon){
+  
+    try{
+      const API = import.meta.env.VITE_API_URL;
+      const url = `${API}/weather?searchQuery=${searchQuery}&lat=${cityLat}&lon=${cityLon}`;
+      const weatherResponse = await axios.get(url);
+      console.log(weatherResponse);
+      setWeather(weatherResponse); 
+    } catch (error)  {
+      console.error(error);
     }
   }
 
@@ -69,7 +89,11 @@ export default function App() {
           fluid
           className="mt-4"
         />
+        
       )}
+      <Weather WeatherComponent={weather}/>
+      
+          
     </div>
   )
 }
