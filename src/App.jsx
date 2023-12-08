@@ -4,8 +4,8 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 import { Form, Button, Card, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 const API_SERVER_AD = import.meta.env.VITE_API_URL;
-import WeatherComponent from './weather';
-
+import Weather from './weather';
+import MovieList from './movies'
 
 
 
@@ -17,9 +17,10 @@ export default function App() {
     longitude: ""
   })
   const [searchQuery, setSearchQuery] = useState('');
-  const [weather,setWeather] = useState('');
+  const [weather,setWeather] = useState();
+  const [movies,setMovies] = useState();
 
-  async function getLocation() {
+  async function getLocationOld() {
     const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`
     console.log(API);
     // try {
@@ -29,12 +30,18 @@ export default function App() {
       console.log(display_name, lat, lon);
       setLocation({ display_name:display_name, latitude: lat, longitude: lon });
       handleSubmit(lat, lon);
+      showMovies(display_name)
     // } catch (error) {
     //   console.error('Error fetching location:', error);
     // }
   }
 
-  
+  ///temp until I get access for the key with locationiq
+  function getLocation() {
+    setLocation({ display_name:'Seattle', latitude:'47.6038321' , longitude: '-122.330062' });
+      handleSubmit('47.6038321', '-122.330062');
+      showMovies('Seattle') 
+  }
 
   async function handleSubmit(cityLat,cityLon){
   
@@ -43,11 +50,29 @@ export default function App() {
       const url = `${API}/weather?searchQuery=${searchQuery}&lat=${cityLat}&lon=${cityLon}`;
       const weatherResponse = await axios.get(url);
       console.log(weatherResponse);
-      setWeather(weatherResponse); 
+      setWeather(weatherResponse.data); 
     } catch (error)  {
       console.error(error);
     }
   }
+
+  async function showMovies(searchQuery){
+  
+    try{
+      const API = import.meta.env.VITE_API_URL;
+      const url = `${API}/movies?searchQuery=${searchQuery}`;
+      const moviesResponse = await axios.get(url);
+      if (moviesResponse.data) {
+        setMovies(moviesResponse.data);
+      } else {
+        // Handle the case where there is no movie data
+        console.log('No movie data available');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
 
 
@@ -91,7 +116,10 @@ export default function App() {
         />
         
       )}
-      <Weather WeatherComponent={weather}/>
+      {location.latitude && location.longitude && weather && (
+  <Weather weather={weather}   className="custom-weather" />
+)}
+  {movies && <MovieList movies={movies} />}
       
           
     </div>
