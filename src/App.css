@@ -1,51 +1,62 @@
 .container {
     max-width: 800px;
     margin: auto;
-    background-color: rgb(5, 1, 80);
-  }
+    background-color: rgb(161, 216, 249)5);
+}
   
-  .mt-4 {
+.mt-4 {
     margin-top: 1.5rem;
-  }
+}
 
-  h1{
+h1{
     font-size: 40px;
     color: #851a28;
     align-items: center;
     text-align: center;
     
 
-  }
+}
 
-  h2 {
+h2 {
     font-size: 18px; /* Set the font size for h2 elements */
-  }
+}
 
-  .form-label {
+.form-label {
     color: antiquewhite;
     font-size: 30px; /* Set the font size for form labels */
-  }
+    
+}
+ 
+
   
-  
-  /* Style for the Card component */
-  .card {
+/* Style for the Card component */
+.card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+}
   
-  /* Style for the Explore button */
-  .btn-primary {
+/* Style for the Explore button */
+.btn-primary {
     background-color: #ffa586;
     border-color: #007bff;
-  }
+}
   
-  /* Style for the Map image */
-  .img-fluid {
+/* Style for the Map image */
+.img-fluid {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(216, 100, 100, 0.1);
-  }
+}
 
-  body {
+body {
     background-color: #384358; /* Set the background color for the entire page */
-  }
+}
+
+.custom-weather {
+  margin-top: 20px; /* Add your custom margin-top */
+  background-color: #f0f0f0; /* Add your custom background color */
+  padding: 10px; /* Add your custom padding */
+  border-radius: 8px; /* Add your custom border radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add your custom box shadow */
+  color: #333; /* Add your custom text color */
+}
