@@ -20,21 +20,41 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [weather, setWeather] = useState();
   const [movies, setMovies] = useState();
+  const locationCache = [];
 
-  async function getLocation() {
+
+  async function getLocation(searchQuery) {
     const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`
 
-    // try {
-    const response = await axios.get(API);
-    console.log(response.data);
-    const { display_name, lat, lon } = response.data[0];
-    console.log(display_name, lat, lon);
-    setLocation({ display_name: display_name, latitude: lat, longitude: lon });
-    handleSubmit(lat, lon);
-    showMovies(display_name)
-    // } catch (error) {
-    //   console.error('Error fetching location:', error);
-    // }
+    // Check if the location is already in the cache
+    const cachedLocation = locationCache.find(item => item.searchQuery = searchQuery);
+    if (locationCache[searchQuery]) {
+      console.log('Location data found in cache:', locationCache[searchQuery]);
+
+      // Update the React state with cached location data
+      setLocation(cachedLocation.locationData);
+
+      return locationCache[searchQuery];
+    }
+
+    try {
+      const response = await axios.get(API);
+      console.log(response.data);
+      const { display_name, lat, lon } = response.data[0];
+      console.log(display_name, lat, lon);
+
+      // Update locationCache with the new location data
+      locationCache.push({ searchQuery, locationData: { display_name, latitude: lat, longitude: lon } });
+
+      setLocation({ display_name: display_name, latitude: lat, longitude: lon });
+
+      handleSubmit(lat, lon);
+      showMovies(display_name)
+
+    } catch (error) {
+      console.error('Error fetching location:', error);
+      return null;
+    }
   }
 
   async function handleSubmit(cityLat, cityLon) {
