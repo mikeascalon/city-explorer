@@ -27,7 +27,7 @@ export default function App() {
     const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`
 
     // Check if the location is already in the cache
-    const cachedLocation = locationCache.find(item => item.searchQuery = searchQuery);
+    const cachedLocation = locationCache.find(item => item.searchQuery === searchQuery);
     if (locationCache[searchQuery]) {
       console.log('Location data found in cache:', locationCache[searchQuery]);
 
